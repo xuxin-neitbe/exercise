@@ -1,0 +1,237 @@
+/* ========================================
+ * 赛博朋克头像组件样式
+ * ======================================== */
+
+/* 基础头像样式 */
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    background: var(--color-bg-secondary);
+    /* 霓虹渐变边框效果 */
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    /* 基础霓虹发光 */
+    box-shadow: var(--glow-sm);
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+/* 渐变边框实现 - 使用伪元素 */
+.avatar::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--color-neon-cyan), var(--color-neon-magenta));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 头像内容层 */
+.image,
+.initials {
+    position: relative;
+    z-index: 1;
+}
+
+/* 头像图片 */
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 首字母缩写 */
+.initials {
+    line-height: 1;
+    text-shadow: var(--text-glow-cyan);
+}
+
+/* ========================================
+ * 形状变体
+ * ======================================== */
+
+/* 圆形 */
+.circle {
+    border-radius: var(--radius-full);
+}
+
+/* 圆角方形 */
+.rounded {
+    border-radius: var(--radius-lg);
+}
+
+/* ========================================
+ * 尺寸变体
+ * ======================================== */
+
+/* 小尺寸 - 32px */
+.sm {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+}
+
+/* 中等尺寸 - 40px */
+.md {
+    width: 40px;
+    height: 40px;
+    font-size: var(--font-size-sm);
+}
+
+/* 大尺寸 - 48px */
+.lg {
+    width: 48px;
+    height: 48px;
+    font-size: var(--font-size-base);
+}
+
+/* 超大尺寸 - 64px */
+.xl {
+    width: 64px;
+    height: 64px;
+    font-size: var(--font-size-lg);
+}
+
+/* ========================================
+ * 在线状态指示器
+ * ======================================== */
+
+/* 带状态的容器 */
+.withStatus {
+    position: relative;
+}
+
+/* 状态指示器基础样式 */
+.status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-bg-primary);
+    z-index: 2;
+}
+
+/* 在线状态 - 霓虹绿色呼吸灯 */
+.statusOnline {
+    background: var(--color-neon-green);
+    box-shadow: var(--glow-green-sm);
+    animation: breatheGreen 2s ease-in-out infinite;
+}
+
+/* 离开状态 - 霓虹黄色 */
+.statusAway {
+    background: var(--color-neon-yellow);
+    box-shadow: var(--glow-sm);
+    animation: breatheYellow 2s ease-in-out infinite;
+}
+
+/* 离线状态 - 灰色 */
+.statusOffline {
+    background: var(--color-text-muted);
+    box-shadow: none;
+    animation: none;
+}
+
+/* ========================================
+ * 悬停效果
+ * ======================================== */
+
+/* 悬停时增强发光效果 */
+.avatar:hover {
+    box-shadow: var(--glow-md);
+    transform: scale(1.02);
+}
+
+/* 悬停时边框动画 */
+.avatar:hover::before {
+    animation: borderGlow 1.5s ease-in-out infinite;
+}
+
+/* ========================================
+ * 动画关键帧
+ * ======================================== */
+
+/* 绿色呼吸灯动画 */
+@keyframes breatheGreen {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px var(--glow-green), 0 0 10px rgba(0, 255, 136, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 15px var(--glow-green), 0 0 30px rgba(0, 255, 136, 0.4);
+    }
+}
+
+/* 黄色呼吸灯动画 */
+@keyframes breatheYellow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px var(--glow-yellow), 0 0 10px rgba(245, 245, 0, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 15px var(--glow-yellow), 0 0 30px rgba(245, 245, 0, 0.4);
+    }
+}
+
+/* 边框发光动画 */
+@keyframes borderGlow {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* ========================================
+ * 尺寸对应的状态指示器大小
+ * ======================================== */
+
+.sm .status {
+    width: 8px;
+    height: 8px;
+    border-width: 1.5px;
+}
+
+.md .status {
+    width: 10px;
+    height: 10px;
+    border-width: 2px;
+}
+
+.lg .status {
+    width: 12px;
+    height: 12px;
+    border-width: 2px;
+}
+
+.xl .status {
+    width: 14px;
+    height: 14px;
+    border-width: 2.5px;
+}

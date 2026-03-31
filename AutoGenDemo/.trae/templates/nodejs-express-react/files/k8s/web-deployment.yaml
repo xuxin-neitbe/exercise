@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{PROJECT_NAME}}-web
+  namespace: {{K8S_NAMESPACE}}
+  labels:
+    app: {{PROJECT_NAME}}-web
+    version: "{{PROJECT_VERSION}}"
+spec:
+  replicas: {{K8S_WEB_REPLICAS}}
+  selector:
+    matchLabels:
+      app: {{PROJECT_NAME}}-web
+  template:
+    metadata:
+      labels:
+        app: {{PROJECT_NAME}}-web
+        version: "{{PROJECT_VERSION}}"
+    spec:
+      containers:
+        - name: web
+          image: {{ACR_REGISTRY}}/{{ACR_NAMESPACE}}/{{PROJECT_NAME}}-web:{{PROJECT_VERSION}}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: VITE_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{PROJECT_NAME}}-config
+                  key: api-url
+          resources:
+            requests:
+              memory: "{{K8S_WEB_MEMORY_REQUEST}}"
+              cpu: "{{K8S_WEB_CPU_REQUEST}}"
+            limits:
+              memory: "{{K8S_WEB_MEMORY_LIMIT}}"
+              cpu: "{{K8S_WEB_CPU_LIMIT}}"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: {{ACR_REGISTRY}}-secret
+      restartPolicy: Always

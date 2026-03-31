@@ -1,0 +1,281 @@
+/* ========================================
+ * 会话列表容器 - 赛博朋克风格
+ * ======================================== */
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--color-bg-secondary);
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    /* 自定义滚动条样式 */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neon-cyan) var(--color-bg-tertiary);
+}
+
+/* Webkit 浏览器的自定义滚动条 */
+.list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.list::-webkit-scrollbar-track {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-sm);
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-neon-cyan) 0%, var(--color-neon-magenta) 100%);
+    border-radius: var(--radius-sm);
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--color-accent-hover) 0%, var(--color-neon-purple) 100%);
+    box-shadow: var(--glow-sm);
+}
+
+/* ========================================
+ * 会话项 - 赛博朋克风格
+ * ======================================== */
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    background: var(--glass-bg-light);
+    border: 2px solid var(--color-border-light);
+    position: relative;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* 悬停效果 - 霓虹发光 */
+.item:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border);
+    transform: translateX(6px);
+    box-shadow:
+        var(--glow-sm),
+        inset 0 0 20px rgba(0, 245, 255, 0.05);
+}
+
+/* 选中状态 - 霓虹边框 + 渐变背景 */
+.item.active {
+    background: linear-gradient(135deg,
+            rgba(0, 245, 255, 0.15) 0%,
+            rgba(255, 0, 255, 0.1) 50%,
+            rgba(0, 245, 255, 0.15) 100%);
+    border-color: var(--color-neon-cyan);
+    box-shadow:
+        var(--glow-md),
+        inset 0 0 30px rgba(0, 245, 255, 0.1);
+    transform: translateX(4px);
+}
+
+/* 选中状态的左侧霓虹边框 */
+.item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: linear-gradient(180deg,
+            var(--color-neon-cyan) 0%,
+            var(--color-neon-magenta) 50%,
+            var(--color-neon-cyan) 100%);
+    border-radius: var(--radius-full);
+    box-shadow: var(--glow-sm);
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* ========================================
+ * 内容区域
+ * ======================================== */
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+/* 会话名称 - 科技感字体 */
+.name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-display);
+    letter-spacing: 0.5px;
+}
+
+/* 选中状态的名称 - 霓虹发光效果 */
+.item.active .name {
+    color: var(--color-neon-cyan);
+    text-shadow: var(--text-glow-cyan);
+}
+
+/* ========================================
+ * 时间戳 - 等宽字体
+ * ======================================== */
+
+.time {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* ========================================
+ * 最后消息预览 - 截断文本
+ * ======================================== */
+
+.preview {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.item.active .preview {
+    color: var(--color-text-secondary);
+}
+
+/* ========================================
+ * 未读消息徽章 - 呼吸灯动画
+ * ======================================== */
+
+.unreadBadge {
+    background: linear-gradient(135deg,
+            var(--color-neon-cyan) 0%,
+            var(--color-neon-magenta) 100%);
+    color: var(--color-bg-primary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    box-shadow: var(--glow-sm);
+    /* 呼吸灯动画效果 */
+    animation: breathe 2s ease-in-out infinite;
+    transition: all var(--transition-normal);
+}
+
+/* 未读徽章悬停效果 */
+.unreadBadge:hover {
+    transform: scale(1.1);
+    box-shadow: var(--glow-md);
+}
+
+/* ========================================
+ * 空状态 - 赛博朋克风格
+ * ======================================== */
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    background: var(--glass-bg-light);
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--color-border-light);
+}
+
+.empty::before {
+    content: '📭';
+    font-size: 48px;
+    margin-bottom: 16px;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px var(--glow-cyan));
+}
+
+.emptyText {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    font-family: var(--font-sans);
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+ * 入场动画 - 赛博朋克风格
+ * ======================================== */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.item {
+    animation: slideIn 0.4s var(--ease-cyber) forwards;
+}
+
+/* 依次延迟动画 */
+.item:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.item:nth-child(2) {
+    animation-delay: 50ms;
+}
+
+.item:nth-child(3) {
+    animation-delay: 100ms;
+}
+
+.item:nth-child(4) {
+    animation-delay: 150ms;
+}
+
+.item:nth-child(5) {
+    animation-delay: 200ms;
+}
+
+.item:nth-child(6) {
+    animation-delay: 250ms;
+}
+
+.item:nth-child(7) {
+    animation-delay: 300ms;
+}
+
+.item:nth-child(8) {
+    animation-delay: 350ms;
+}
+
+.item:nth-child(9) {
+    animation-delay: 400ms;
+}
+
+.item:nth-child(10) {
+    animation-delay: 450ms;
+}

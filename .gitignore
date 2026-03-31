@@ -1,0 +1,117 @@
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 环境变量和敏感信息
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+*.manifest
+*.spec
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+build/
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 文档输出
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+
+# 图片文件（可选，根据需要保留）
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+
+# 大型数据文件
+*.csv
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!composer.json
+
+# 虚拟环境
+venv/
+env/
+.venv/
+
+# Docker
+docker-compose.override.yml
+
+# 嵌入的 Git 仓库（子项目保留源码，不保留 Git 历史）
+**/.git/
+
+# 大型目录排除
+node_modules/
+__pycache__/
+.pytest_cache/
+.venv/
+env/
+venv/
+.next/
+coverage/
+.swc/

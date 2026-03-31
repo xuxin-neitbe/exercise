@@ -1,0 +1,355 @@
+/* ========================================
+ * 赛博朋克风格输入框组件
+ * ======================================== */
+
+/* 外层容器 - 保持原有布局结构 */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+/* 全宽样式 */
+.fullWidth {
+    width: 100%;
+}
+
+/* ========================================
+ * 标签样式 - 赛博朋克风格
+ * ======================================== */
+
+.label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    padding-left: 12px;
+}
+
+/* 标签左侧装饰线 */
+.label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--color-neon-cyan), var(--color-neon-magenta));
+    border-radius: var(--radius-xs);
+    box-shadow: var(--glow-sm);
+}
+
+/* ========================================
+ * 输入框包装器 - 核心样式
+ * ======================================== */
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    /* 深色半透明背景 - 玻璃拟态效果 */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    /* 霓虹青色边框 */
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0 var(--space-4);
+    height: 52px;
+    transition: all var(--transition-normal);
+    /* 内部阴影增强深度感 */
+    box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.3),
+        0 0 0 transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 输入框包装器背景扫描线效果（可选） */
+.inputWrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(0, 245, 255, 0.05),
+            transparent);
+    transition: left var(--duration-slower) var(--ease-linear);
+    pointer-events: none;
+}
+
+/* ========================================
+ * 聚焦状态 - 霓虹发光增强
+ * ======================================== */
+
+.inputWrapper:focus-within {
+    /* 边框颜色增强 */
+    border-color: var(--color-neon-cyan);
+    /* 霓虹发光效果 */
+    box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.3),
+        0 0 0 3px var(--color-accent-muted),
+        var(--glow-md);
+    transform: translateY(-2px);
+}
+
+/* 聚焦时扫描线动画 */
+.inputWrapper:focus-within::before {
+    left: 100%;
+    animation: scanlineInput 3s var(--ease-linear) infinite;
+}
+
+/* 扫描线动画关键帧 */
+@keyframes scanlineInput {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* ========================================
+ * 错误状态 - 霓虹红色
+ * ======================================== */
+
+.hasError {
+    border-color: var(--color-neon-red);
+    animation: shake 0.5s var(--ease-out);
+    box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.3),
+        var(--glow-red-sm);
+}
+
+.hasError:focus-within {
+    box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.3),
+        0 0 0 3px var(--color-error-muted),
+        var(--glow-red-md);
+}
+
+/* ========================================
+ * 禁用状态 - 降低透明度
+ * ======================================== */
+
+.inputWrapper:has(.input:disabled),
+.inputWrapper:has(.textarea:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: var(--color-border-light);
+    box-shadow: none;
+}
+
+/* ========================================
+ * 图标样式
+ * ======================================== */
+
+.hasIcon {
+    padding-left: var(--space-3);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-neon-cyan);
+    font-size: 18px;
+    transition: all var(--transition-fast);
+}
+
+/* 聚焦时图标发光 */
+.inputWrapper:focus-within .icon {
+    color: var(--color-neon-cyan);
+    text-shadow: var(--text-glow-cyan);
+    transform: scale(1.1);
+}
+
+/* ========================================
+ * 输入框本体样式
+ * ======================================== */
+
+.input {
+    flex: 1;
+    /* 透明背景 */
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    letter-spacing: 0.02em;
+    transition: all var(--transition-fast);
+}
+
+/* ========================================
+ * 占位符效果 - 较暗文本 + 可选闪烁
+ * ======================================== */
+
+.input::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+    transition: all var(--transition-fast);
+}
+
+/* 聚焦时占位符效果 */
+.input:focus::placeholder {
+    opacity: 0.4;
+    color: var(--color-neon-cyan);
+}
+
+/* 可选：占位符闪烁效果 */
+.input:not(:focus)::placeholder {
+    animation: placeholderBlink 2s var(--ease-in-out) infinite;
+}
+
+@keyframes placeholderBlink {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* ========================================
+ * 禁用状态 - 输入框本体
+ * ======================================== */
+
+.input:disabled,
+.textarea:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ========================================
+ * 错误文本样式
+ * ======================================== */
+
+.error {
+    font-size: var(--font-size-xs);
+    color: var(--color-neon-red);
+    font-weight: 500;
+    font-family: var(--font-sans);
+    padding-left: 12px;
+    position: relative;
+    animation: slideUp var(--transition-normal) var(--ease-out);
+}
+
+/* 错误文本左侧装饰点 */
+.error::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--color-neon-red);
+    border-radius: 50%;
+    box-shadow: var(--glow-red-sm);
+}
+
+/* ========================================
+ * 文本域样式 - 赛博朋克风格
+ * ======================================== */
+
+.textareaWrapper {
+    height: auto;
+    min-height: 120px;
+    padding: var(--space-4);
+    align-items: flex-start;
+}
+
+.textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 100px;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+}
+
+/* 文本域占位符 */
+.textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.7;
+}
+
+/* ========================================
+ * 悬停效果 - 增强交互反馈
+ * ======================================== */
+
+.inputWrapper:not(:has(.input:disabled)):not(:has(.textarea:disabled)):hover {
+    border-color: var(--color-border-strong);
+    box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.3),
+        var(--glow-sm);
+}
+
+/* ========================================
+ * 装饰性角落 - 赛博朋克科技感
+ * ======================================== */
+
+.inputWrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid var(--color-neon-cyan);
+    border-right: 2px solid var(--color-neon-cyan);
+    border-top-right-radius: var(--radius-md);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.inputWrapper:focus-within::after {
+    opacity: 1;
+    box-shadow: 2px -2px 4px var(--glow-cyan);
+}
+
+/* ========================================
+ * 自动填充样式覆盖 - 赛博朋克风格
+ * ======================================== */
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.textarea:-webkit-autofill,
+.textarea:-webkit-autofill:hover,
+.textarea:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-text-primary);
+    -webkit-box-shadow: 0 0 0 1000px var(--color-bg-secondary) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ========================================
+ * 响应式设计
+ * ======================================== */
+
+@media (max-width: 768px) {
+    .inputWrapper {
+        height: 48px;
+        padding: 0 var(--space-3);
+    }
+
+    .input {
+        font-size: var(--font-size-sm);
+    }
+
+    .label {
+        font-size: var(--font-size-xs);
+    }
+}

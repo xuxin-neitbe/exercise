@@ -1,0 +1,67 @@
+# 依赖目录
+node_modules
+.pnp
+.pnp.js
+
+# 构建输出
+.next
+out
+build
+dist
+
+# 测试相关
+coverage
+.nyc_output
+*.lcov
+
+# 环境配置（敏感信息）
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE 配置
+.idea
+.vscode
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Git 相关
+.git
+.gitignore
+
+# Docker 相关
+Dockerfile
+Dockerfile.*
+docker-compose*.yml
+.docker
+
+# 文档
+README.md
+CHANGELOG.md
+*.md
+
+# 测试文件
+**/__tests__/**
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# 其他
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# AISDK 目录（不需要打包）
+AISDK
+
+# Prisma 生成的客户端（会在构建时重新生成）
+node_modules/.prisma
+node_modules/@prisma

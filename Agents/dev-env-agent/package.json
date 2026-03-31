@@ -1,0 +1,27 @@
+{
+  "name": "dev-env-agent",
+  "version": "1.0.0",
+  "description": "Windows 开发环境配置 Agent - 自动化检测和配置开发环境镜像",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doctor": "node agent/index.js doctor",
+    "diagnose": "node agent/index.js diagnose",
+    "fix": "node agent/index.js fix",
+    "setup": "node agent/index.js setup",
+    "skill:list": "node -e \"const {listSkills}=require('./skills');console.log(listSkills().join('\\n'))\"",
+    "skill:run": "node -e \"const {callSkill}=require('./skills');callSkill(process.argv[2]).then(r=>console.log(JSON.stringify(r,null,2)))\" -- "
+  },
+  "keywords": [
+    "dev-env",
+    "agent",
+    "mirror",
+    "china"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}

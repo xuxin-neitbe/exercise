@@ -1,0 +1,22 @@
+# LangGraph 工作流系统依赖
+
+# LangGraph 核心框架
+langgraph>=1.0.0
+
+# LangChain 核心
+langchain>=0.3.0
+
+# OpenAI 模型支持
+langchain-openai>=0.2.0
+
+# 环境变量管理
+python-dotenv>=1.0.0
+
+# 可选：Anthropic 模型支持
+# langchain-anthropic>=0.1.0
+
+# 可选：SQLite 检查点持久化
+# langgraph[sqlite]>=1.0.0
+
+# 可选：LangSmith 调试
+# langsmith>=0.1.0

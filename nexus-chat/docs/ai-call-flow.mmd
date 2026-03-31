@@ -1,0 +1,49 @@
+flowchart TD
+    subgraph Client["前端客户端"]
+        UI[用户点击 AI 建议按钮]
+        Hook[useAISuggestion Hook]
+        API[fetch /api/ai/suggestions]
+    end
+
+    subgraph Server["后端 API"]
+        Route["POST /api/ai/suggestions"]
+        Auth[验证用户登录]
+        Limit[检查每日限额]
+        Security[安全检查]
+        BuildPrompt[构建提示词]
+    end
+
+    subgraph AI["AI 服务层"]
+        Qwen[阿里云通义千问]
+        API_DS[dashscope.aliyuncs.com]
+    end
+
+    subgraph Response["响应处理"]
+        Parse[解析 JSON 响应]
+        Validate[验证输出格式]
+        Filter[内容安全过滤]
+        Return[返回建议给前端]
+    end
+
+    UI --> Hook
+    Hook --> API
+    API --> Route
+    Route --> Auth
+    Auth -->|未登录| Error1[返回 401 错误]
+    Auth -->|已登录| Limit
+    Limit -->|超限| Error2[返回 429 错误]
+    Limit -->|正常| Security
+    Security -->|检测到恶意输入| Safe[返回安全默认建议]
+    Security -->|通过| BuildPrompt
+    BuildPrompt --> Qwen
+    Qwen --> API_DS
+    API_DS --> Parse
+    Parse --> Validate
+    Validate -->|格式无效| Safe
+    Validate -->|格式有效| Filter
+    Filter --> Return
+
+    style Qwen fill:#ff6b6b,stroke:#333,stroke-width:2px
+    style API_DS fill:#feca57,stroke:#333,stroke-width:2px
+    style BuildPrompt fill:#48dbfb,stroke:#333,stroke-width:2px
+    style Route fill:#1dd1a1,stroke:#333,stroke-width:2px

@@ -1,0 +1,806 @@
+/* ========================================
+ * 赛博朋克风格侧边栏
+ * ======================================== */
+
+/* 主容器 - 深色玻璃效果 + 霓虹边框 */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* 深色玻璃效果背景 */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    /* 霓虹边框 */
+    border-right: 2px solid var(--color-neon-cyan);
+    box-shadow: var(--glow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 添加霓虹光晕装饰 */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            var(--color-neon-cyan) 20%,
+            var(--color-neon-magenta) 50%,
+            var(--color-neon-cyan) 80%,
+            transparent 100%);
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+/* 头部区域 - 渐变背景 + 霓虹分隔线 */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    /* 青色到品红的渐变背景 */
+    background: linear-gradient(135deg,
+            rgba(0, 245, 255, 0.15) 0%,
+            rgba(255, 0, 255, 0.15) 100%);
+    /* 霓虹分隔线 */
+    border-bottom: 2px solid var(--color-neon-cyan);
+    box-shadow:
+        0 2px 10px rgba(0, 245, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 0, 255, 0.3);
+    position: relative;
+}
+
+/* 头部霓虹装饰线 */
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--color-neon-cyan) 50%,
+            transparent 100%);
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* 用户信息区域 */
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.userInfo:hover {
+    transform: translateX(4px);
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 用户名 - 霓虹发光效果 */
+.userName {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    text-shadow: var(--text-glow-cyan);
+}
+
+/* 用户状态 - 呼吸灯效果 */
+.userStatus {
+    font-size: 13px;
+    color: var(--color-neon-green);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-shadow: 0 0 10px var(--glow-green);
+}
+
+/* 在线状态呼吸灯 */
+.userStatus::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--color-neon-green);
+    border-radius: var(--radius-full);
+    /* 呼吸灯动画 */
+    animation: breathe 2s ease-in-out infinite;
+    box-shadow: 0 0 10px var(--glow-green);
+}
+
+/* 退出按钮 - 霓虹边框 */
+.logoutButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
+    color: var(--color-text-tertiary);
+    background: var(--color-bg-tertiary);
+    /* 霓虹边框 */
+    border: 2px solid var(--color-neon-red);
+    transition: all var(--transition-fast);
+    font-size: 18px;
+}
+
+.logoutButton:hover {
+    background: var(--color-neon-red);
+    color: white;
+    box-shadow: var(--glow-red-md);
+    transform: scale(1.05) rotate(10deg);
+}
+
+/* 标签页 - 霓虹指示器 */
+.tabs {
+    display: flex;
+    padding: 12px;
+    gap: 8px;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    background: transparent;
+    border: 2px solid transparent;
+    transition: all var(--transition-fast);
+    font-family: var(--font-sans);
+    position: relative;
+}
+
+.tab:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-neon-cyan);
+    border-color: var(--color-border);
+}
+
+/* 选中状态 - 发光效果 */
+.tab.active {
+    background: linear-gradient(135deg,
+            rgba(0, 245, 255, 0.2) 0%,
+            rgba(255, 0, 255, 0.2) 100%);
+    color: var(--color-neon-cyan);
+    /* 霓虹边框 */
+    border-color: var(--color-neon-cyan);
+    /* 发光效果 */
+    box-shadow:
+        0 0 15px var(--glow-cyan),
+        inset 0 0 10px rgba(0, 245, 255, 0.1);
+    text-shadow: var(--text-glow-cyan);
+}
+
+/* 标签页霓虹指示器 */
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg,
+            var(--color-neon-cyan),
+            var(--color-neon-magenta));
+    border-radius: var(--radius-full);
+    box-shadow: var(--glow-sm);
+}
+
+/* 好友 tab 数字徽章 */
+.tabBadge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: linear-gradient(135deg,
+            var(--color-neon-yellow) 0%,
+            var(--color-neon-orange) 100%);
+    color: var(--color-bg-primary);
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 0 10px var(--glow-yellow),
+        0 0 20px rgba(255, 102, 0, 0.3);
+    animation: badgePulse 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* 好友 tab 有通知时的呼吸灯效果 */
+.tab.hasNotification {
+    animation: tabGlow 2s ease-in-out infinite;
+    border-color: var(--color-neon-yellow);
+}
+
+/* 呼吸灯动画 - tab 发光 */
+@keyframes tabGlow {
+    0%, 100% {
+        box-shadow:
+            0 0 5px rgba(245, 245, 0, 0.3),
+            inset 0 0 5px rgba(245, 245, 0, 0.1);
+    }
+    50% {
+        box-shadow:
+            0 0 20px rgba(245, 245, 0, 0.6),
+            0 0 40px rgba(255, 102, 0, 0.3),
+            inset 0 0 15px rgba(245, 245, 0, 0.2);
+    }
+}
+
+/* 徽章脉冲动画 */
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow:
+            0 0 10px var(--glow-yellow),
+            0 0 20px rgba(255, 102, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow:
+            0 0 15px var(--glow-yellow),
+            0 0 30px rgba(255, 102, 0, 0.5);
+    }
+}
+
+/* 搜索框 - 霓虹边框 + 聚焦发光 */
+.searchWrapper {
+    padding: 12px 16px;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--color-bg-tertiary);
+    /* 霓虹边框 */
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: 0 14px;
+    height: 48px;
+    transition: all var(--transition-fast);
+}
+
+/* 聚焦发光效果 */
+.searchBox:focus-within {
+    border-color: var(--color-neon-cyan);
+    box-shadow:
+        0 0 20px var(--glow-cyan),
+        inset 0 0 10px rgba(0, 245, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.searchIcon {
+    color: var(--color-neon-cyan);
+    flex-shrink: 0;
+    text-shadow: var(--text-glow-cyan);
+}
+
+.searchInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+}
+
+.searchInput::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.clearButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    color: var(--color-text-tertiary);
+    transition: all var(--transition-fast);
+}
+
+.clearButton:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-neon-red);
+    box-shadow: var(--glow-red-sm);
+}
+
+/* 好友请求区域 - 呼吸灯动画 */
+.requestsSection {
+    background: linear-gradient(135deg,
+            rgba(245, 245, 0, 0.1) 0%,
+            rgba(255, 102, 0, 0.1) 100%);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.requestsHeader {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.requestsHeader:hover {
+    background: rgba(245, 245, 0, 0.1);
+}
+
+.requestsTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+}
+
+/* 好友请求徽章 - 呼吸灯动画 + 霓虹黄色/橙色 */
+.requestBadge {
+    background: linear-gradient(135deg,
+            var(--color-neon-yellow) 0%,
+            var(--color-neon-orange) 100%);
+    color: var(--color-bg-primary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    /* 呼吸灯动画 */
+    animation: breathe 2s ease-in-out infinite;
+    box-shadow:
+        0 0 10px var(--glow-yellow),
+        0 0 20px rgba(255, 102, 0, 0.3);
+}
+
+.requestsList {
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.requestItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    animation: slideIn 0.3s var(--transition-bounce) forwards;
+    transition: all var(--transition-fast);
+}
+
+.requestItem:hover {
+    border-color: var(--color-neon-yellow);
+    box-shadow:
+        0 0 15px var(--glow-yellow),
+        var(--shadow-md);
+    transform: translateX(4px);
+}
+
+.requestInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.requestName {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.requestActions {
+    display: flex;
+    gap: 8px;
+}
+
+.requestActions button {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+}
+
+/* 接受按钮 - 霓虹绿色 */
+.requestActions button:first-child {
+    background: linear-gradient(135deg,
+            var(--color-neon-green) 0%,
+            #00cc6a 100%);
+    color: var(--color-bg-primary);
+    box-shadow:
+        0 0 10px var(--glow-green),
+        var(--shadow-sm);
+}
+
+.requestActions button:first-child:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 20px var(--glow-green),
+        var(--shadow-md);
+}
+
+/* 拒绝按钮 */
+.requestActions button:last-child {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-tertiary);
+    border: 2px solid var(--color-border);
+}
+
+.requestActions button:last-child:hover {
+    background: var(--color-neon-red);
+    color: white;
+    border-color: var(--color-neon-red);
+    box-shadow: var(--glow-red-md);
+}
+
+/* 内容区域 */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+/* 底部区域 */
+.footer {
+    padding: 16px;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+}
+
+/* 底部按钮 - 霓虹渐变效果 + 呼吸灯动画 */
+.footer button {
+    width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-xl);
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* 霓虹渐变效果 */
+    background: linear-gradient(135deg,
+            var(--color-neon-cyan) 0%,
+            var(--color-neon-purple) 100%);
+    color: var(--color-bg-primary);
+    border: 2px solid transparent;
+    cursor: pointer;
+    box-shadow:
+        0 0 20px var(--glow-cyan),
+        var(--shadow-md);
+    transition: all var(--transition-fast);
+    font-family: var(--font-sans);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 按钮呼吸灯动画 */
+.footer button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    animation: breathe 3s ease-in-out infinite;
+}
+
+.footer button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 30px var(--glow-cyan),
+        0 0 60px rgba(0, 245, 255, 0.3),
+        var(--shadow-lg);
+}
+
+.footer button:active {
+    transform: translateY(2px);
+    box-shadow:
+        0 0 15px var(--glow-cyan),
+        var(--shadow-sm);
+}
+
+/* 模态框内容 */
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.searchResults {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.searching,
+.noResults {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-text-tertiary);
+    font-size: 14px;
+}
+
+.searching::before {
+    content: '🔍';
+    display: block;
+    font-size: 32px;
+    margin-bottom: 12px;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+.noResults::before {
+    content: '😕';
+    display: block;
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.searchResult {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border);
+    transition: all var(--transition-fast);
+}
+
+.searchResult:hover {
+    border-color: var(--color-neon-cyan);
+    box-shadow: var(--glow-sm);
+    transform: translateX(4px);
+}
+
+.resultInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.resultName {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.resultId {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+}
+
+.searchResult button {
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background: linear-gradient(135deg,
+            var(--color-neon-cyan) 0%,
+            var(--color-neon-purple) 100%);
+    color: var(--color-bg-primary);
+}
+
+.searchResult button:hover {
+    box-shadow: var(--glow-sm);
+}
+
+/* ==================== 编辑资料弹窗样式 ==================== */
+
+/* 编辑资料弹窗内容 */
+.profileModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 320px;
+}
+
+/* 头像上传区域 */
+.avatarUploadSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 头像预览 - 霓虹边框 */
+.avatarPreview {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    background: linear-gradient(135deg,
+            rgba(0, 245, 255, 0.1) 0%,
+            rgba(255, 0, 255, 0.1) 100%);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-neon-cyan);
+    box-shadow: var(--glow-sm);
+}
+
+/* 上传按钮 - 霓虹渐变 */
+.uploadButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    background: linear-gradient(135deg,
+            var(--color-neon-cyan) 0%,
+            var(--color-neon-purple) 100%);
+    color: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow:
+        0 0 15px var(--glow-cyan),
+        var(--shadow-sm);
+}
+
+.uploadButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 25px var(--glow-cyan),
+        var(--shadow-md);
+}
+
+.uploadButton:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow:
+        0 0 10px var(--glow-cyan),
+        var(--shadow-sm);
+}
+
+.uploadButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 只读字段区域 */
+.readOnlyGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg,
+            rgba(0, 245, 255, 0.1) 0%,
+            rgba(255, 0, 255, 0.1) 100%);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-neon-cyan);
+}
+
+.readOnlyItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.readOnlyLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.readOnlyLabel::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--color-neon-purple);
+    border-radius: var(--radius-full);
+    box-shadow: var(--glow-magenta-sm);
+}
+
+.readOnlyValue {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    text-align: right;
+}
+
+/* 表单组 */
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+/* 按钮组 */
+.buttonGroup {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 8px;
+}
+
+/* 错误提示 - 霓虹红色 */
+.errorMessage {
+    padding: 12px;
+    background: rgba(255, 0, 85, 0.1);
+    border: 2px solid var(--color-neon-red);
+    border-radius: var(--radius-md);
+    color: var(--color-neon-red);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: var(--glow-red-sm);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .sidebar {
+        border-right: none;
+    }
+
+    .header {
+        padding: 16px;
+    }
+
+    .tabs {
+        padding: 10px;
+    }
+
+    .tab {
+        padding: 10px;
+        font-size: 13px;
+    }
+}

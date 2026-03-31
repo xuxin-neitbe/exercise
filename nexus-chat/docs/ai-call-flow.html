@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Chat AI 调用流程图</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        .chart-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nexus Chat AI 调用流程图</h1>
+        <div class="chart-container">
+            <div class="mermaid">
+flowchart TD
+    subgraph Client["👤 前端客户端"]
+        direction TB
+        UI["点击 AI 建议按钮"]
+        Hook["useAISuggestion Hook"]
+        API["fetch /api/ai/suggestions"]
+    end
+
+    subgraph Server["⚙️ 后端 API 服务器"]
+        direction TB
+        Route["📥 POST /api/ai/suggestions"]
+        Auth{👤 验证登录}
+        Limit{📊 检查每日限额}
+        Security{🔒 安全检查}
+        BuildPrompt["📝 构建提示词"]
+    end
+
+    subgraph Cloud["☁️ AI 云服务"]
+        direction TB
+        Qwen["🤖 阿里云通义千问"]
+        API_DS["🌐 dashscope.aliyuncs.com"]
+    end
+
+    subgraph Response["📤 响应处理"]
+        direction TB
+        Parse["� JSON 解析"]
+        Validate["✅ 验证输出格式"]
+        Filter["🛡️ 内容安全过滤"]
+        Return["📤 返回建议给前端"]
+    end
+
+    UI --> Hook
+    Hook --> API
+    API --> Route
+    Route --> Auth
+    Auth -->|未登录| Error1[❌ 401 未授权]
+    Auth -->|已登录| Limit
+    Limit -->|超限| Error2[⛔ 429 限额超出]
+    Limit -->|正常| Security
+    Security -->|恶意输入| Safe[🔐 返回安全默认建议]
+    Security -->|通过| BuildPrompt
+    BuildPrompt --> Qwen
+    Qwen --> API_DS
+    API_DS --> Parse
+    Parse --> Validate
+    Validate -->|格式无效| Safe
+    Validate -->|格式有效| Filter
+    Filter --> Return
+
+    style Client fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style Server fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style Cloud fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style Response fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Qwen fill:#ff6b6b,stroke:#c0392b,stroke-width:3px
+    style API_DS fill:#feca57,stroke:#e67e22,stroke-width:2px
+    style Error1 fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Error2 fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Safe fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+            </div>
+        </div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e3f2fd; border: 2px solid #1976d2;"></div>
+                <span>前端客户端</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fff3e0; border: 2px solid #f57c00;"></div>
+                <span>后端 API</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fce4ec; border: 2px solid #c2185b;"></div>
+                <span>AI 云服务</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e8f5e9; border: 2px solid #388e3c;"></div>
+                <span>响应处理</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

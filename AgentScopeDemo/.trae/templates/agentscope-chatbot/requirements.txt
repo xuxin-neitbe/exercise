@@ -1,0 +1,16 @@
+# AgentScope 聊天机器人依赖
+
+# AgentScope 框架核心
+agentscope>=1.0.0
+
+# DashScope 模型支持（阿里云）
+dashscope>=1.0.0
+
+# 环境变量管理
+python-dotenv>=1.0.0
+
+# 可选：OpenAI 模型支持
+# openai>=1.0.0
+
+# 可选：额外的工具集成
+# agentscope[tools]>=1.0.0

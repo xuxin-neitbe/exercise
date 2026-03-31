@@ -1,0 +1,24 @@
+# AutoGen 多 Agent 协作系统依赖
+
+# AutoGen 框架核心（最新版本 0.4+）
+# 使用 AgentChat API 替代 v0.2 的 ConversableAgent
+autogen-agentchat>=0.4.0
+autogen-ext[openai]>=0.4.0
+
+# 环境变量管理
+python-dotenv>=1.0.0
+
+# MCP 服务器支持（可选，用于工具集成）
+# playwright-mcp 可用于网页浏览等场景
+# @playwright/mcp@latest
+
+# 代码格式化工具（可选）
+black>=23.0.0
+flake8>=6.0.0
+
+# 测试框架（可选）
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# AutoGen Studio（可选，用于可视化调试）
+# autogenstudio>=0.1.0

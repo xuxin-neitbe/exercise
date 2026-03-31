@@ -1,0 +1,361 @@
+/* ========================================
+ * 好友列表 - 赛博朋克风格
+ * ======================================== */
+
+/* 列表容器 - 深色背景 + 自定义滚动条 */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    /* 自定义滚动条样式 */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-neon-cyan) var(--color-bg-tertiary);
+}
+
+/* Webkit 滚动条样式 */
+.list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.list::-webkit-scrollbar-track {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-sm);
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-neon-cyan), var(--color-neon-magenta));
+    border-radius: var(--radius-sm);
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+    box-shadow: var(--glow-sm);
+}
+
+/* 好友项 - 霓虹发光效果 + 渐变边框 */
+.item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-normal);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+    /* 入场动画 */
+    animation: slideIn 0.4s var(--ease-cyber) forwards;
+}
+
+/* 渐变边框效果 */
+.item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+            transparent 0%,
+            var(--color-neon-cyan) 50%,
+            transparent 100%);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+/* 悬停效果 - 霓虹发光 */
+.item:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-neon-cyan);
+    transform: translateX(4px);
+    box-shadow: var(--glow-md);
+}
+
+.item:hover::before {
+    opacity: 1;
+}
+
+/* 用户信息区域 */
+.info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+/* 用户名 - 白色发光效果 */
+.name {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    transition: text-shadow var(--transition-normal);
+}
+
+.item:hover .name {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* 用户ID - 等宽字体 + 较暗颜色 */
+.userId {
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* 状态指示器 */
+.status {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 状态指示灯 */
+.status::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+/* 在线状态 - 霓虹绿色呼吸灯 */
+.online {
+    color: var(--color-neon-green);
+}
+
+.online::before {
+    background: var(--color-neon-green);
+    box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.2);
+    animation: breatheGreen 2s ease-in-out infinite;
+}
+
+/* 离开状态 - 霓虹黄色呼吸灯 */
+.away {
+    color: var(--color-neon-yellow);
+}
+
+.away::before {
+    background: var(--color-neon-yellow);
+    box-shadow: 0 0 0 3px rgba(245, 245, 0, 0.2);
+    animation: breatheYellow 2s ease-in-out infinite;
+}
+
+/* 离线状态 - 灰色 */
+.offline {
+    color: var(--color-text-muted);
+}
+
+.offline::before {
+    background: var(--color-text-muted);
+    box-shadow: none;
+    animation: none;
+}
+
+/* ========================================
+ * 动画关键帧 - 赛博朋克风格
+ * ======================================== */
+
+/* 入场动画 - 从左侧滑入 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 霓虹绿色呼吸动画 */
+@keyframes breatheGreen {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.2),
+            0 0 10px rgba(0, 255, 136, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(0, 255, 136, 0.1),
+            0 0 20px rgba(0, 255, 136, 0.5);
+    }
+}
+
+/* 霓虹黄色呼吸动画 */
+@keyframes breatheYellow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 3px rgba(245, 245, 0, 0.2),
+            0 0 10px rgba(245, 245, 0, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(245, 245, 0, 0.1),
+            0 0 20px rgba(245, 245, 0, 0.5);
+    }
+}
+
+/* 列表项入场延迟 */
+.item:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.item:nth-child(2) {
+    animation-delay: 50ms;
+}
+
+.item:nth-child(3) {
+    animation-delay: 100ms;
+}
+
+.item:nth-child(4) {
+    animation-delay: 150ms;
+}
+
+.item:nth-child(5) {
+    animation-delay: 200ms;
+}
+
+.item:nth-child(6) {
+    animation-delay: 250ms;
+}
+
+.item:nth-child(7) {
+    animation-delay: 300ms;
+}
+
+.item:nth-child(8) {
+    animation-delay: 350ms;
+}
+
+/* 操作按钮 - 霓虹边框 + 发光效果 */
+.item button {
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: transparent;
+    color: var(--color-neon-cyan);
+    border: 1px solid var(--color-neon-cyan);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    opacity: 0;
+    transform: scale(0.9) translateX(-10px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 按钮背景渐变 */
+.item button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            var(--color-neon-cyan) 0%,
+            var(--color-neon-magenta) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    z-index: -1;
+}
+
+/* 悬停时显示按钮 */
+.item:hover button {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+}
+
+/* 按钮悬停效果 - 霓虹发光 */
+.item button:hover {
+    color: var(--color-text-primary);
+    box-shadow: var(--glow-md);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.item button:hover::before {
+    opacity: 1;
+}
+
+/* 按钮按下效果 */
+.item button:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--glow-sm);
+}
+
+/* 空状态 - 赛博朋克风格 */
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-16) var(--space-4);
+    text-align: center;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 空状态装饰性光晕 */
+.empty::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 245, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+/* 空状态图标 */
+.empty::after {
+    content: '👋';
+    font-size: 48px;
+    margin-bottom: var(--space-4);
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+.emptyText {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-weight: 500;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}

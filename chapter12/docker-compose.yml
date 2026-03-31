@@ -1,0 +1,119 @@
+services:
+  # ============================================================================
+  # Qdrant 向量数据库
+  # ============================================================================
+  # 文档：https://qdrant.tech/documentation/
+  # REST API: http://localhost:6333
+  # Dashboard: http://localhost:6333/dashboard
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: hello-agents-qdrant
+    ports:
+      - "6333:6333"    # REST API 端口
+      - "6334:6334"    # gRPC 端口（可选）
+    volumes:
+      - ./data/qdrant_storage:/qdrant/storage  # 持久化向量数据
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - hello-agents-network
+
+  # ============================================================================
+  # Neo4j 图数据库
+  # ============================================================================
+  # 文档：https://neo4j.com/docs/
+  # Browser UI: http://localhost:7474
+  # Bolt Protocol: bolt://localhost:7687
+  # 默认账号：neo4j / hello-agents-password
+  neo4j:
+    image: neo4j:5.14-community
+    container_name: hello-agents-neo4j
+    ports:
+      - "7474:7474"    # HTTP (Browser UI)
+      - "7687:7687"    # Bolt (数据库连接)
+    environment:
+      NEO4J_AUTH: neo4j/hello-agents-password
+      NEO4J_PLUGINS: '["apoc"]'  # 安装 APOC 插件（可选）
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+      NEO4J_dbms_security_procedures_allowlist: apoc.*
+      # 增加内存限制（可选，根据机器配置调整）
+      # NEO4J_dbms_memory_heap_initial__size: 512M
+      # NEO4J_dbms_memory_heap_max__size: 1G
+    volumes:
+      - ./data/neo4j_data:/data  # 持久化图数据
+      - ./data/neo4j_logs:/logs  # 日志
+      - ./data/neo4j_import:/var/lib/neo4j/import  # 导入目录
+      - ./data/neo4j_plugins:/plugins  # 插件目录
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:7474"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s  # Neo4j 启动较慢
+    networks:
+      - hello-agents-network
+
+  # ============================================================================
+  # 本地 Embedding 服务（可选）
+  # ============================================================================
+  # 如果选择使用本地 Embedding 而非 DashScope，可以启用此服务
+  # 使用 Ollama 提供 OpenAI 兼容的 Embedding API
+  # 注意：需要较大的磁盘空间和内存
+  # embedding:
+  #   image: ollama/ollama:latest
+  #   container_name: hello-agents-embedding
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ./data/ollama_models:/root/.ollama
+  #   restart: unless-stopped
+  #   command: ollama serve
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 60s
+  #   networks:
+  #     - hello-agents-network
+  #   # 首次启动时自动拉取 embedding 模型
+  #   # 手动执行：docker exec hello-agents-embedding ollama pull nomic-embed-text
+
+networks:
+  hello-agents-network:
+    driver: bridge
+
+# ============================================================================
+# 使用说明
+# ============================================================================
+# 1. 启动所有服务:
+#    docker-compose up -d
+#
+# 2. 查看服务状态:
+#    docker-compose ps
+#
+# 3. 查看日志:
+#    docker-compose logs -f qdrant
+#    docker-compose logs -f neo4j
+#
+# 4. 停止服务:
+#    docker-compose down
+#
+# 5. 停止并删除数据（谨慎使用）:
+#    docker-compose down -v
+#
+# 6. 访问管理界面:
+#    - Qdrant Dashboard: http://localhost:6333/dashboard
+#    - Neo4j Browser: http://localhost:7474
+#      连接信息：bolt://localhost:7687, 账号：neo4j, 密码：hello-agents-password
+#
+# 7. 健康检查:
+#    - Qdrant: curl http://localhost:6333/
+#    - Neo4j: curl http://localhost:7474
+# ============================================================================

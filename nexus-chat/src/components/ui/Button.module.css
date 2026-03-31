@@ -1,0 +1,207 @@
+/* ========================================
+ * 赛博朋克按钮样式
+ * ======================================== */
+
+/* 基础按钮样式 */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    font-family: var(--font-sans);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
+    position: relative;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ========================================
+ * 按钮变体
+ * ======================================== */
+
+/* 主要按钮 - 霓虹青色 */
+.primary {
+    background: linear-gradient(135deg, var(--color-neon-cyan) 0%, var(--color-neon-green) 100%);
+    color: var(--color-bg-primary);
+    box-shadow:
+        0 0 10px rgba(0, 245, 255, 0.3),
+        0 4px 12px rgba(0, 245, 255, 0.2);
+}
+
+.primary:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        0 0 20px rgba(0, 245, 255, 0.5),
+        0 6px 20px rgba(0, 245, 255, 0.3);
+}
+
+.primary:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 0 5px rgba(0, 245, 255, 0.3),
+        0 2px 8px rgba(0, 245, 255, 0.2);
+}
+
+/* 次要按钮 - 霓虹品红色 */
+.secondary {
+    background: linear-gradient(135deg, var(--color-neon-magenta) 0%, var(--color-neon-purple) 100%);
+    color: white;
+    box-shadow:
+        0 0 10px rgba(255, 0, 255, 0.3),
+        0 4px 12px rgba(255, 0, 255, 0.2);
+}
+
+.secondary:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        0 0 20px rgba(255, 0, 255, 0.5),
+        0 6px 20px rgba(255, 0, 255, 0.3);
+}
+
+.secondary:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 0 5px rgba(255, 0, 255, 0.3),
+        0 2px 8px rgba(255, 0, 255, 0.2);
+}
+
+/* 幽灵按钮 - 透明背景 */
+.ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+}
+
+.ghost:hover:not(:disabled) {
+    background: var(--color-bg-hover);
+    border-color: var(--color-neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.2);
+}
+
+.ghost:active:not(:disabled) {
+    background: var(--color-bg-active);
+}
+
+/* 危险按钮 - 霓虹红色 */
+.danger {
+    background: linear-gradient(135deg, var(--color-neon-red) 0%, #FF6B7A 100%);
+    color: white;
+    box-shadow:
+        0 0 10px rgba(255, 0, 85, 0.3),
+        0 4px 12px rgba(255, 0, 85, 0.2);
+}
+
+.danger:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        0 0 20px rgba(255, 0, 85, 0.5),
+        0 6px 20px rgba(255, 0, 85, 0.3);
+}
+
+.danger:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 0 5px rgba(255, 0, 85, 0.3),
+        0 2px 8px rgba(255, 0, 85, 0.2);
+}
+
+/* ========================================
+ * 按钮尺寸
+ * ======================================== */
+
+.sm {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-md);
+}
+
+.md {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-base);
+    border-radius: var(--radius-lg);
+}
+
+.lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--font-size-lg);
+    border-radius: var(--radius-xl);
+    border-width: 2px;
+}
+
+/* ========================================
+ * 其他状态
+ * ======================================== */
+
+/* 全宽按钮 */
+.fullWidth {
+    width: 100%;
+}
+
+/* 加载状态 */
+.loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+/* 隐藏文本（加载时） */
+.hiddenText {
+    visibility: hidden;
+}
+
+/* 加载动画容器 */
+.spinner {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 加载动画图标 */
+.spinnerIcon {
+    width: 18px;
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+}
+
+/* ========================================
+ * 内部元素样式
+ * ======================================== */
+
+/* 按钮内图标 */
+.button svg {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+}
+
+/* 确保图标和文字垂直居中对齐 */
+.button > * {
+    display: flex;
+    align-items: center;
+}
+
+/* ========================================
+ * 动画关键帧
+ * ======================================== */
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

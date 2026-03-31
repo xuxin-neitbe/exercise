@@ -1,0 +1,62 @@
+# 依赖
+/node_modules
+socket-server/node_modules
+/.pnp
+.pnp.js
+
+# 测试
+/coverage
+
+# 构建输出
+.next
+out
+build
+dist
+
+# 调试
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 本地环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 测试结果
+test-results/
+
+# 测试覆盖率
+coverage/
+
+# Prisma
+prisma/migrations/20260221022913_init/
+
+# 上传的文件
+public/uploads/
+
+# 临时文件
+*.tmp
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# 备份文件
+backup.sql
+
+# Trae IDE
+.trae/

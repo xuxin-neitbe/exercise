@@ -1,0 +1,440 @@
+# Trae 个人规则 - 项目初始化自动化
+
+## 🎯 核心功能
+
+当在新项目中工作时，自动检测并提示配置 Git 子模块模板。
+
+---
+
+## 📋 触发条件
+
+### 自动触发场景
+
+当同时满足以下条件时，自动执行初始化检查：
+
+1. **新 Git 仓库** - 检测到 `.git` 目录但无 `.trae` 目录
+2. **首次打开** - 用户在新项目中首次与 AI 对话
+3. **关键词触发** - 用户提到以下关键词：
+   - "新项目"
+   - "创建项目"
+   - "初始化"
+   - "配置模板"
+   - "开始项目"
+
+### 手动触发命令
+
+用户可以使用以下命令手动触发：
+
+```
+/init-project
+@project-init 初始化
+配置模板
+添加模板
+```
+
+---
+
+## 🚀 执行流程
+
+### 步骤 1：环境检查（必须）
+
+**检查项：**
+```powershell
+# 1. 检查是否为 Git 仓库
+if (!(Test-Path ".git")) {
+    提示："当前目录不是 Git 仓库，是否要初始化？"
+    用户确认后执行：git init
+}
+
+# 2. 检查 .trae 目录
+if (Test-Path ".trae") {
+    提示：".trae 目录已存在，是否重新配置？"
+    用户选择否 → 退出
+}
+
+# 3. 检查网络连接
+try {
+    Test-NetConnection codeup.aliyun.com -Port 443
+} catch {
+    提示："无法连接到模板仓库，请检查网络"
+}
+```
+
+### 步骤 2：添加 Git 子模块
+
+**执行命令：**
+```bash
+git submodule add https://codeup.aliyun.com/611f331203f23adfbed10979/neitbe/Template.git .trae
+```
+
+**成功处理：**
+- ✅ 显示：`✅ 模板配置成功！`
+- ✅ 显示：`📁 .trae 目录已添加（Git 子模块）`
+- ✅ 自动提交配置
+
+**失败处理：**
+- ❌ 显示错误原因
+- ❌ 提供手动命令：`git submodule add https://codeup.aliyun.com/611f331203f23adfbed10979/neitbe/Template.git .trae`
+- ❌ 提供替代方案（手动克隆）
+
+### 步骤 3：初始化子模块
+
+```bash
+git submodule update --init
+```
+
+### 步骤 4：提交配置
+
+```bash
+git add .trae .gitmodules
+git commit -m "feat: 添加项目模板配置"
+```
+
+### 步骤 5：显示使用指南
+
+```
+✅ 项目模板配置成功！
+
+可用模板：
+  🌐 Web 全栈应用（4 个）
+    - nodejs-express-react (Node.js + React) ⭐
+    - java-springboot-vue (Java + Vue) 🏢
+    - python-fastapi-react (Python + React) 🤖
+    - go-gin-vue (Go + Vue) ⚡
+
+  🤖 AI Agent 应用（4 个）
+    - autogen-multi-agent (多 Agent 协作) ⭐
+    - langgraph-workflow (工作流编排) 🔗
+    - agentscope-chatbot (聊天机器人) 🌟
+    - camel-multi-agent (多 Agent 通信) 🎓
+
+下一步：
+  1. 使用 @project-builder 创建具体功能
+  2. 查看 .trae/README.md 了解模板详情
+  3. 运行 git submodule update --init 确保子模块已加载
+  4. 更新模板：git submodule update --remote .trae
+```
+
+---
+
+## 🔄 项目创建完成后的自动提示
+
+### 触发条件
+
+当检测到以下情况时，自动提示配置 DevOps：
+
+1. **@project-builder 创建完成项目后**
+2. **用户提到"项目创建完成"、"创建好了"等关键词**
+3. **检测到新项目目录已生成**
+
+### 自动提示内容
+
+```
+🎉 项目创建完成！
+
+接下来建议配置 DevOps 相关功能：
+
+💡 推荐操作：
+  @acr-registry-setup 配置 DevOps 环境
+  
+这将帮你完成：
+  ✅ 配置阿里云 ACR 私有仓库
+  ✅ 推送基础镜像（Node.js、Nginx 等）
+  ✅ 修改 Dockerfile 使用私有仓库地址
+  ✅ 生成云效 Flow 流水线配置
+  ✅ 解决 Docker Hub 限流问题
+
+是否需要现在配置？[是] [否] [稍后]
+```
+
+### 用户选择后的处理
+
+**用户选择"是"：**
+```
+🔧 正在调用 @acr-registry-setup 配置 DevOps 环境...
+
+[自动执行 ACR Registry Setup Agent 的工作流程]
+```
+
+**用户选择"稍后"：**
+```
+👌 已记录，稍后需要时输入：
+  @acr-registry-setup 配置 ACR 私有仓库
+  
+或者查看使用指南：
+  cat HOW_TO_USE_DEVOPS_AGENT.md
+```
+
+---
+
+## 💡 交互示例
+
+### 示例 1：新项目自动检测
+
+```
+[用户在新项目中首次打开 Trae]
+
+AI: 👋 欢迎使用 Trae！检测到这是一个新项目。
+
+是否需要配置项目模板（Git 子模块）？
+这将添加：
+- 2 个 Agents（项目构建、ACR 配置）
+- 5 个 Skills（代码模板、配置生成等）
+- 8 个 Templates（Web 全栈 + AI Agent）
+
+[是] [否]
+
+用户：是
+
+AI: 🔧 正在配置模板...
+
+📦 检查环境...
+✅ Git 仓库已初始化
+
+📦 添加模板子模块...
+✅ 子模块添加成功
+
+🔧 初始化子模块...
+✅ 子模块初始化完成
+
+📝 提交配置...
+✅ 配置提交成功
+
+🎉 完成！项目模板已配置。
+
+[显示可用模板列表和下一步指南]
+```
+
+### 示例 2：手动触发
+
+```
+用户：/init-project
+
+AI: 🔧 正在初始化项目模板...
+
+[执行完整流程]
+
+✅ 完成！模板配置已添加到 .trae 目录
+
+提示：
+- 使用 @project-builder 开始创建项目
+- 运行 git submodule update --remote 更新模板
+```
+
+### 示例 3：已有 .trae 目录
+
+```
+用户：初始化项目
+
+AI: ⚠️ 检测到 .trae 目录已存在。
+
+请选择：
+1. 重新配置（删除现有 .trae）
+2. 更新模板（拉取最新版本）
+3. 跳过
+
+用户：2
+
+AI: 🔄 正在更新模板...
+git submodule update --remote .trae
+✅ 模板已更新到最新版本
+
+变更：
+- 新增 Skill: XXX
+- 优化模板：YYY
+- 修复问题：ZZZ
+```
+
+---
+
+## ⚙️ 配置选项
+
+### 环境变量（可选）
+
+在 `.env` 文件中配置：
+
+```bash
+# 自定义模板源（可选）
+TEMPLATE_URL=https://codeup.aliyun.com/your-org/your-template.git
+
+# 指定版本（可选）
+TEMPLATE_VERSION=v2.1.0
+
+# 自动提交（默认 true）
+AUTO_COMMIT=true
+
+# 显示指南（默认 true）
+SHOW_GUIDE=true
+```
+
+### 项目配置
+
+自动创建 `.trae-config.json`：
+
+```json
+{
+  "version": "1.0.0",
+  "template": {
+    "source": "https://codeup.aliyun.com/611f331203f23adfbed10979/neitbe/Template.git",
+    "version": "v2.1.0",
+    "path": ".trae"
+  },
+  "agents": ["project-builder"],
+  "skills": ["all"],
+  "templates": {
+    "available": [
+      "nodejs-express-react",
+      "java-springboot-vue",
+      "python-fastapi-react",
+      "go-gin-vue",
+      "autogen-multi-agent",
+      "langgraph-workflow",
+      "agentscope-chatbot",
+      "camel-multi-agent"
+    ]
+  }
+}
+```
+
+---
+
+## ⚠️ 错误处理
+
+### 错误 1：网络问题
+
+**错误信息：**
+```
+❌ 无法连接到 codeup.aliyun.com
+```
+
+**解决方案：**
+1. 检查网络连接：`ping codeup.aliyun.com`
+2. 配置代理：`git config --global http.proxy http://proxy.example.com:8080`
+3. 手动克隆：`git clone https://codeup.aliyun.com/611f331203f23adfbed10979/neitbe/Template.git .trae`
+
+### 错误 2：权限问题
+
+**错误信息：**
+```
+❌ 没有访问权限
+```
+
+**解决方案：**
+1. 配置 Git 凭证：`git config --global credential.helper store`
+2. 检查仓库权限
+3. 联系仓库管理员
+
+### 错误 3：子模块冲突
+
+**错误信息：**
+```
+❌ .trae 目录已存在
+```
+
+**解决方案：**
+1. 删除重新配置：`rm -rf .trae && git submodule add ...`
+2. 或使用更新模式：`git submodule update --remote .trae`
+
+---
+
+## ✅ 验证清单
+
+初始化完成后自动验证：
+
+- [ ] `.trae` 目录存在
+- [ ] `.gitmodules` 文件存在
+- [ ] 子模块状态正常：`git submodule status`
+- [ ] 模板文件完整（8 个模板）
+- [ ] 配置文件创建成功
+- [ ] Git 提交成功
+
+**快速验证命令：**
+```bash
+# 检查 .trae 目录
+ls -la .trae
+
+# 检查子模块状态
+git submodule status
+
+# 检查模板内容
+ls .trae/templates
+```
+
+---
+
+## 🔄 后续维护
+
+### 更新模板
+
+```bash
+# 定期更新（建议每周）
+git submodule update --remote .trae
+
+# 查看更新
+cd .trae && git log --oneline -5
+```
+
+### 自定义模板
+
+```bash
+# Fork 模板仓库
+git submodule set-url .trae https://codeup.aliyun.com/your-org/custom-template.git
+
+# 创建自定义分支
+cd .trae
+git checkout -b my-custom-feature
+# 修改...
+git push origin my-custom-feature
+```
+
+---
+
+## 📖 相关资源
+
+- **模板仓库：** https://codeup.aliyun.com/611f331203f23adfbed10979/neitbe/Template.git
+- **Git 子模块文档：** .trae/docs/GIT_SUBMODULE_EXPLAINED.md
+- **使用指南：** .trae/HOW_TO_USE_IN_ANY_PROJECT.md
+- **团队实施：** .trae/TEAM_TEMPLATE_IMPLEMENTATION.md
+
+---
+
+## 🎯 最佳实践
+
+### 1. 新项目立即初始化
+
+```bash
+# 创建项目后的第一件事
+mkdir my-project && cd my-project
+git init
+/init-project  # 或 @project-init 初始化
+```
+
+### 2. 定期更新模板
+
+```bash
+# 每周更新一次
+git submodule update --remote .trae
+```
+
+### 3. 团队统一版本
+
+```bash
+# 在团队中指定版本
+TEMPLATE_VERSION=v2.1.0
+```
+
+### 4. 版本回退
+
+```bash
+# 回退到特定版本
+cd .trae
+git checkout v2.0.0
+cd ..
+git add .trae
+git commit -m "chore: 回退模板到 v2.0.0"
+```
+
+---
+
+**最后更新：** 2026-03-08  
+**版本：** v1.0.0

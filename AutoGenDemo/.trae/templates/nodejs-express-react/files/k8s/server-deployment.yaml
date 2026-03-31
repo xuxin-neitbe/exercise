@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{PROJECT_NAME}}-server
+  namespace: {{K8S_NAMESPACE}}
+  labels:
+    app: {{PROJECT_NAME}}-server
+    version: "{{PROJECT_VERSION}}"
+spec:
+  replicas: {{K8S_SERVER_REPLICAS}}
+  selector:
+    matchLabels:
+      app: {{PROJECT_NAME}}-server
+  template:
+    metadata:
+      labels:
+        app: {{PROJECT_NAME}}-server
+        version: "{{PROJECT_VERSION}}"
+    spec:
+      containers:
+        - name: server
+          image: {{ACR_REGISTRY}}/{{ACR_NAMESPACE}}/{{PROJECT_NAME}}-server:{{PROJECT_VERSION}}
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{PROJECT_NAME}}-secrets
+                  key: database-url
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{PROJECT_NAME}}-secrets
+                  key: jwt-secret
+          resources:
+            requests:
+              memory: "{{K8S_SERVER_MEMORY_REQUEST}}"
+              cpu: "{{K8S_SERVER_CPU_REQUEST}}"
+            limits:
+              memory: "{{K8S_SERVER_MEMORY_LIMIT}}"
+              cpu: "{{K8S_SERVER_CPU_LIMIT}}"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: {{ACR_REGISTRY}}-secret
+      restartPolicy: Always

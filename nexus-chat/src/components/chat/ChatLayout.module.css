@@ -1,0 +1,406 @@
+/* ========================================
+ * 赛博朋克聊天布局样式
+ * ======================================== */
+
+/* 主布局容器 */
+.layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    /* 深色半透明背景 */
+    background: rgba(10, 10, 15, 0.95);
+    position: relative;
+}
+
+/* 数据流动画背景效果 */
+.layout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 数据流动画 - 霓虹渐变 */
+    background:
+        linear-gradient(135deg,
+            rgba(0, 245, 255, 0.03) 0%,
+            rgba(255, 0, 255, 0.02) 50%,
+            rgba(0, 255, 136, 0.03) 100%);
+    background-size: 400% 400%;
+    animation: dataStream 15s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 霓虹网格装饰 */
+.layout::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* 赛博朋克网格线 */
+    background-image:
+        linear-gradient(rgba(0, 245, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 255, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ========================================
+ * 侧边栏 - 玻璃拟态 + 霓虹效果
+ * ======================================== */
+
+.sidebar {
+    flex-shrink: 0;
+    /* 玻璃拟态效果 */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    /* 霓虹分隔线 - 右侧边框 */
+    border-right: 2px solid var(--color-neon-cyan);
+    box-shadow:
+        4px 0 24px rgba(0, 0, 0, 0.5),
+        inset 0 0 30px rgba(0, 245, 255, 0.05);
+    /* 平滑过渡动画 */
+    transition:
+        width var(--transition-slow) var(--ease-cyber),
+        opacity var(--transition-slow) var(--ease-cyber),
+        transform var(--transition-slow) var(--ease-cyber);
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+/* 侧边栏霓虹光晕装饰 */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    /* 左侧霓虹线条 */
+    background: linear-gradient(180deg,
+        transparent 0%,
+        var(--color-neon-cyan) 20%,
+        var(--color-neon-magenta) 50%,
+        var(--color-neon-cyan) 80%,
+        transparent 100%);
+    box-shadow: var(--glow-sm);
+    animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* 侧边栏打开状态 */
+.open {
+    width: 340px;
+    opacity: 1;
+}
+
+/* 侧边栏关闭状态 */
+.closed {
+    width: 0;
+    border-right: none;
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* ========================================
+ * 主内容区 - 深色背景
+ * ======================================== */
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* 深色背景 */
+    background: var(--color-bg-primary);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* 主内容区科技感装饰 */
+.main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    /* 霓虹光晕装饰 */
+    background: radial-gradient(circle,
+        rgba(0, 245, 255, 0.08) 0%,
+        transparent 70%);
+    pointer-events: none;
+    animation: breathe 4s ease-in-out infinite;
+}
+
+/* ========================================
+ * 加载状态 - 霓虹风格动画
+ * ======================================== */
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: var(--color-bg-primary);
+    gap: 24px;
+    position: relative;
+}
+
+/* 加载状态背景装饰 */
+.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 50% 50%,
+            rgba(0, 245, 255, 0.05) 0%,
+            transparent 60%);
+    pointer-events: none;
+}
+
+/* 科技感加载图标 */
+.loading::after {
+    content: '⚡';
+    font-size: 72px;
+    animation: neonFlicker 2s linear infinite;
+    text-shadow: var(--text-glow-cyan);
+    position: relative;
+    z-index: 1;
+}
+
+/* 加载文字 */
+.loadingText {
+    font-size: 18px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-neon-cyan);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: neonPulse 2s ease-in-out infinite;
+    text-shadow: var(--text-glow-cyan);
+    position: relative;
+    z-index: 1;
+}
+
+/* 霓虹风格加载器 */
+.spinner {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    /* 外圈 */
+    border: 3px solid transparent;
+    border-top-color: var(--color-neon-cyan);
+    border-radius: 50%;
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    box-shadow: var(--glow-md);
+}
+
+/* 加载器内圈 */
+.spinner::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border: 2px solid transparent;
+    border-right-color: var(--color-neon-magenta);
+    border-radius: 50%;
+    animation: spin 1s linear infinite reverse;
+}
+
+/* 加载器核心 */
+.spinner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: var(--color-neon-cyan);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--glow-sm);
+    animation: breathe 1.5s ease-in-out infinite;
+}
+
+/* ========================================
+ * 遮罩层 - 深色半透明 + 玻璃模糊
+ * ======================================== */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    /* 深色半透明背景 */
+    background: rgba(10, 10, 15, 0.7);
+    /* 玻璃模糊效果 */
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    z-index: 100;
+    animation: fadeIn var(--transition-normal) var(--ease-out);
+}
+
+/* 遮罩层霓虹边框装饰 */
+.overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(0, 245, 255, 0.1);
+    pointer-events: none;
+}
+
+/* ========================================
+ * 响应式设计
+ * ======================================== */
+
+@media (max-width: 768px) {
+    /* 移动端侧边栏 */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 200;
+        /* 增强玻璃效果 */
+        background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: var(--glass-blur-heavy);
+        -webkit-backdrop-filter: var(--glass-blur-heavy);
+    }
+
+    .open {
+        width: 300px;
+    }
+
+    .closed {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    /* 移动端加载器尺寸调整 */
+    .spinner {
+        width: 48px;
+        height: 48px;
+    }
+
+    .spinner::before {
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+    }
+
+    .spinner::after {
+        width: 10px;
+        height: 10px;
+    }
+
+    .loading::after {
+        font-size: 56px;
+    }
+
+    .loadingText {
+        font-size: 14px;
+    }
+}
+
+/* ========================================
+ * 动画关键帧
+ * ======================================== */
+
+/* 数据流动画 */
+@keyframes dataStream {
+    0% {
+        background-position: 0% 50%;
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        background-position: 100% 50%;
+        opacity: 0.3;
+    }
+}
+
+/* 旋转动画 */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 淡入动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 霓虹脉冲动画 */
+@keyframes neonPulse {
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: var(--glow-sm);
+    }
+
+    50% {
+        opacity: 0.7;
+        box-shadow: var(--glow-md);
+    }
+}
+
+/* 霓虹闪烁动画 */
+@keyframes neonFlicker {
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
+        opacity: 1;
+        text-shadow: var(--text-glow-cyan);
+    }
+
+    20%,
+    24%,
+    55% {
+        opacity: 0.5;
+        text-shadow: none;
+    }
+}
+
+/* 呼吸发光动画 */
+@keyframes breathe {
+    0%,
+    100% {
+        box-shadow: 0 0 5px var(--glow-cyan), 0 0 10px rgba(0, 245, 255, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 20px var(--glow-cyan), 0 0 40px rgba(0, 245, 255, 0.4);
+    }
+}

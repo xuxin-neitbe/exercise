@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Backend Server
+  server:
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgresql://db:5432/{{PROJECT_NAME}}_dev
+      - JWT_SECRET=dev-secret-change-in-production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./apps/server:/app
+      - /app/node_modules
+    networks:
+      - {{PROJECT_NAME}}-network
+
+  # Frontend Web
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    depends_on:
+      - server
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+    networks:
+      - {{PROJECT_NAME}}-network
+
+  # Database
+  db:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB={{PROJECT_NAME}}_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - {{PROJECT_NAME}}-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  {{PROJECT_NAME}}-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

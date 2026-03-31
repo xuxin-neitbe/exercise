@@ -1,0 +1,47 @@
+{
+  "name": "{{PROJECT_NAME}}",
+  "version": "{{PROJECT_VERSION}}",
+  "description": "{{PROJECT_DESCRIPTION}}",
+  "author": "{{PROJECT_AUTHOR}}",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:web\"",
+    "dev:server": "cd apps/server && npm run dev",
+    "dev:web": "cd apps/web && npm run dev",
+    "build": "npm run build:server && npm run build:web",
+    "build:server": "cd apps/server && npm run build",
+    "build:web": "cd apps/web && npm run build",
+    "start": "npm run start:server",
+    "start:server": "cd apps/server && npm start",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "test": "npm run test:server && npm run test:web",
+    "test:server": "cd apps/server && npm test",
+    "test:web": "cd apps/web && npm test",
+    "lint": "npm run lint:server && npm run lint:web",
+    "lint:server": "cd apps/server && npm run lint",
+    "lint:web": "cd apps/web && npm run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/{{PROJECT_AUTHOR}}/{{PROJECT_NAME}}.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "react",
+    "fullstack"
+  ],
+  "license": "MIT"
+}

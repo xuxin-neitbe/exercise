@@ -1,0 +1,3 @@
+camel-ai
+colorama
+python-dotenv

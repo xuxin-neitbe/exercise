@@ -1,0 +1,20 @@
+# CAMEL 多 Agent 通信系统依赖
+
+# CAMEL 框架核心
+camel-ai>=0.2.0
+
+# OpenAI 模型支持
+openai>=1.0.0
+
+# 环境变量管理
+python-dotenv>=1.0.0
+
+# 可选：代码执行支持
+# jupyter>=1.0.0
+
+# 可选：网络搜索工具
+# duckduckgo-search>=4.0.0
+
+# 可选：数据处理
+# pandas>=2.0.0
+# numpy>=1.24.0

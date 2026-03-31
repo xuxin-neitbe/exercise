@@ -1,0 +1,26 @@
+{
+  "name": "{{PROJECT_NAME}}",
+  "version": "{{PROJECT_VERSION}}",
+  "description": "{{PROJECT_DESCRIPTION}}",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:web\"",
+    "dev:server": "cd apps/server && mvn spring-boot:run",
+    "dev:web": "cd apps/web && npm run dev",
+    "build": "npm run build:server && npm run build:web",
+    "build:server": "cd apps/server && mvn clean package",
+    "build:web": "cd apps/web && npm run build",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "test": "npm run test:server && npm run test:web",
+    "test:server": "cd apps/server && mvn test",
+    "test:web": "cd apps/web && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

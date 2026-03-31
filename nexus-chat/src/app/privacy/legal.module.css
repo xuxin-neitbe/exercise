@@ -1,0 +1,119 @@
+/**
+ * 法律文档页面样式
+ * 用于隐私政策和服务条款页面
+ */
+
+.container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, #0a0a0f 0%, #0f0f1a 100%);
+    color: #e0e0e0;
+}
+
+.header {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00f5ff;
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+    margin-bottom: 10px;
+}
+
+.updateDate {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.section {
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(15, 15, 30, 0.8);
+    border: 1px solid rgba(0, 245, 255, 0.1);
+    border-radius: 12px;
+    transition: border-color 0.3s ease;
+}
+
+.section:hover {
+    border-color: rgba(0, 245, 255, 0.3);
+}
+
+.section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #00f5ff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+}
+
+.section h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff00ff;
+    margin: 20px 0 10px;
+}
+
+.section p {
+    margin-bottom: 15px;
+    color: #c0c0c0;
+}
+
+.section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.section li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    color: #b0b0b0;
+}
+
+.section li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #00f5ff;
+}
+
+.section li strong {
+    color: #00f5ff;
+    font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .section h2 {
+        font-size: 1.2rem;
+    }
+}

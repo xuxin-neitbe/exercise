@@ -1,0 +1,185 @@
+/* ========================================
+ * 赛博朋克模态框样式
+ * ======================================== */
+
+/* 遮罩层 */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    /* 确保不被任何父元素的 transform 影响 */
+    transform: translateZ(0);
+    /* 确保完全覆盖视口 */
+    width: 100vw;
+    height: 100vh;
+    /* 确保居中 */
+    padding: 20px;
+    animation: fadeIn var(--duration-fast) var(--ease-out);
+}
+
+/* 模态框容器 */
+.modal {
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    width: 90%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow:
+        0 0 30px rgba(0, 245, 255, 0.2),
+        0 10px 40px rgba(0, 0, 0, 0.5);
+    /* 确保 modal 不受父元素影响 */
+    position: relative;
+    z-index: 1;
+    animation: pop var(--duration-normal) var(--ease-bounce);
+}
+
+/* ========================================
+ * 头部区域 - 霓虹分隔线
+ * ======================================== */
+
+.header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 245, 255, 0.08) 0%,
+        rgba(255, 0, 255, 0.05) 100%
+    );
+}
+
+/* 霓虹分隔线 */
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--color-neon-cyan) 20%,
+        var(--color-neon-magenta) 50%,
+        var(--color-neon-cyan) 80%,
+        transparent 100%
+    );
+    box-shadow: 0 0 10px var(--glow-cyan), 0 0 20px rgba(0, 245, 255, 0.3);
+}
+
+/* 标题 */
+.title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    text-shadow: var(--text-glow-cyan);
+    letter-spacing: 0.05em;
+}
+
+/* 关闭按钮 */
+.closeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    background: rgba(0, 245, 255, 0.1);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-fast);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    background: var(--color-error-muted);
+    color: var(--color-neon-red);
+    border-color: var(--color-neon-red);
+    box-shadow: var(--glow-red-sm);
+    transform: scale(1.05) rotate(90deg);
+}
+
+/* ========================================
+ * 内容区域
+ * ======================================== */
+
+.content {
+    padding: 24px;
+    overflow-y: auto;
+    max-height: calc(90vh - 80px);
+    background: rgba(10, 10, 15, 0.6);
+    color: var(--color-text-secondary);
+}
+
+/* ========================================
+ * 关闭动画
+ * ======================================== */
+
+.closing {
+    animation: fadeOut var(--duration-fast) var(--ease-in) forwards;
+}
+
+.closing .modal {
+    animation: popOut var(--duration-fast) var(--ease-in) forwards;
+}
+
+/* ========================================
+ * 动画关键帧
+ * ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes pop {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    70% {
+        transform: scale(1.02) translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes popOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9) translateY(10px);
+    }
+}

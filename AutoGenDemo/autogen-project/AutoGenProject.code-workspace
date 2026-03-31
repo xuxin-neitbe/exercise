@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "D:\\Projects\\AutoGenDemo\\autogen-project\\.venv\\Scripts\\python.exe",
+		"python.terminal.activateEnvironment": true,
+		"python.analysis.extraPaths": [
+			"D:\\Projects\\AutoGenDemo\\autogen-project\\.venv\\Lib\\site-packages"
+		],
+		"python.envFile": "${workspaceFolder}/.env",
+		"python.terminal.activateEnv": true,
+		"terminal.integrated.env.windows": {
+			"VIRTUAL_ENV": "D:\\Projects\\AutoGenDemo\\autogen-project\\.venv",
+			"PATH": "D:\\Projects\\AutoGenDemo\\autogen-project\\.venv\\Scripts;${env:PATH}"
+		}
+	}
+}

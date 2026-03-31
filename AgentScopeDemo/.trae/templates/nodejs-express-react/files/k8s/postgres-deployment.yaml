@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{PROJECT_NAME}}-postgres
+  namespace: {{K8S_NAMESPACE}}
+  labels:
+    app: {{PROJECT_NAME}}-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{PROJECT_NAME}}-postgres
+  template:
+    metadata:
+      labels:
+        app: {{PROJECT_NAME}}-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_DB
+              value: "{{POSTGRES_DB}}"
+            - name: POSTGRES_USER
+              value: "{{POSTGRES_USER}}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{PROJECT_NAME}}-secrets
+                  key: postgres-password
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              memory: "{{K8S_POSTGRES_MEMORY_REQUEST}}"
+              cpu: "{{K8S_POSTGRES_CPU_REQUEST}}"
+            limits:
+              memory: "{{K8S_POSTGRES_MEMORY_LIMIT}}"
+              cpu: "{{K8S_POSTGRES_CPU_LIMIT}}"
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: {{PROJECT_NAME}}-postgres-pvc
+      restartPolicy: Always
