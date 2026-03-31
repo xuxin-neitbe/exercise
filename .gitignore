@@ -198,6 +198,10 @@ build/
 
 # 大型数据文件
 *.csv
+*.bin
+*.db
+*.sqlite
+*.sqlite3
 !package.json
 !package-lock.json
 !tsconfig.json
